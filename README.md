@@ -1,12 +1,12 @@
 # ShiftNgo - Second-Hand Car Selling Platform
 
-A modern, full-stack web application for ShiftNgo, a second-hand car showroom that sells certified used cars. Built with React, Tailwind CSS, and Firebase.
+A modern, full-stack web application for ShiftNgo, a second-hand car showroom that sells certified used cars. Built with React, TypeScript, Tailwind CSS, and Supabase.
 
 ## 🚀 Features
 
 ### Public Website (Customer-Facing)
 - **Modern Showroom UI**: Glassmorphic design with premium aesthetics
-- **Dynamic Car Inventory**: Real-time car listings from Firebase Firestore
+- **Dynamic Car Inventory**: Real-time car listings from Supabase
 - **Advanced Filtering**: Filter by fuel type, transmission, price, year, kilometers, owners, and brand
 - **Responsive Design**: Optimized for mobile, tablet, and desktop
 - **Interactive Car Details**: Modal with image slider and comprehensive specifications
@@ -14,10 +14,11 @@ A modern, full-stack web application for ShiftNgo, a second-hand car showroom th
 - **Professional Sections**: Hero, Why Choose Us, Contact information
 
 ### Admin Panel (Secure & User-Friendly)
-- **Firebase Authentication**: Secure email/password login
+- **Supabase Authentication**: Secure email/password login
 - **Car Upload Form**: Intuitive form for non-technical users
-- **Image Management**: Multiple image upload with preview
+- **Image Management**: Multiple image upload with preview and compression
 - **Car Management**: View, edit, and delete car listings
+- **Car Description Support**: Rich text descriptions for each vehicle
 - **Real-time Updates**: Instant reflection of changes on the public site
 
 ## 🛠️ Tech Stack
@@ -203,6 +204,25 @@ vercel --prod
 1. Build the project: `npm run build`
 2. Upload the `dist` folder to Netlify
 3. Set environment variables in Netlify dashboard
+
+### Deploy to Render
+1. Push your code to GitHub
+2. Create a new Web Service in Render
+3. Connect your GitHub repository
+4. Use the following settings:
+   - Build Command: `npm install && npm run build`
+   - Start Command: `npm run start`
+   - Environment Variables: Add your Supabase URL and Anon Key
+5. Click Deploy
+
+**Important:** For Render deployment, make sure your Vite configuration has proper host binding:
+```js
+// vite.config.ts
+server: {
+  host: '0.0.0.0',
+  port: 3000
+}
+```
 
 ## 🤝 Contributing
 
