@@ -53,7 +53,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       <div className="lg:hidden mb-4">
         <button
           onClick={onToggle}
-          className="flex items-center justify-center space-x-2 w-full bg-blue-600 px-4 py-3 rounded-lg text-white shadow-md hover:bg-blue-700 hover:shadow-lg transition-all font-medium"
+          className="flex items-center justify-center space-x-2 w-full bg-white/10 backdrop-blur-sm px-4 py-3 rounded-lg border border-white/20 text-white shadow-sm hover:shadow-md transition-shadow"
         >
           <SlidersHorizontal className="h-5 w-5" />
           <span>Filter Cars</span>
@@ -69,37 +69,33 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
       >
         {/* Mobile Overlay */}
         <div
-          className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 lg:hidden"
           onClick={onToggle}
         ></div>
 
         {/* Filter Content */}
         <div
           className={`
-          fixed left-0 right-0 bottom-0 h-[90vh] bg-gray-950 shadow-xl transform transition-transform duration-300 ease-in-out rounded-t-3xl overflow-hidden
+          fixed left-0 right-0 bottom-0 h-[80vh] bg-gray-800 shadow-xl transform transition-transform duration-300 rounded-t-3xl
           lg:relative lg:w-full lg:shadow-none lg:transform-none lg:h-auto lg:bg-white/10 lg:backdrop-blur-sm lg:rounded-xl lg:border lg:border-white/20 lg:p-4
           ${isOpen ? "translate-y-0" : "translate-y-full lg:translate-y-0"}
         `}
         >
           {/* Mobile Header with drag handle */}
-          <div className="lg:hidden bg-gray-900">
-            <div className="flex justify-center py-3">
-              <div className="w-16 h-1.5 bg-gray-600 rounded-full"></div>
-            </div>
-            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
-              <h3 className="text-xl font-semibold text-white">
-                Filter Options
-              </h3>
+          <div className="lg:hidden">
+            <div className="mx-auto w-12 h-1.5 bg-gray-400 rounded-full my-3"></div>
+            <div className="flex items-center justify-between p-4 border-b border-gray-600">
+              <h3 className="text-lg font-semibold text-white">Filters</h3>
               <button
                 onClick={onToggle}
-                className="p-2 bg-gray-800 hover:bg-gray-700 rounded-full text-white transition-colors"
+                className="p-2 hover:bg-gray-700 rounded-lg text-white"
               >
-                <X className="h-6 w-6" />
+                <X className="h-5 w-5" />
               </button>
             </div>
           </div>
 
-          <div className="px-6 py-5 space-y-6 overflow-y-auto h-[calc(90vh-130px)] lg:p-0 lg:space-y-4 lg:h-auto lg:pb-0">
+          <div className="p-4 lg:p-0 space-y-4 overflow-y-auto h-[calc(80vh-80px)] lg:h-auto lg:pb-0">
             {/* Desktop Header */}
             <div className="hidden lg:flex items-center justify-between mb-3">
               <h3 className="text-lg font-semibold text-gray-900">
@@ -114,24 +110,16 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             </div>
 
             {/* Filter sections */}
-            <div className="space-y-6 lg:space-y-3">
+            <div className="space-y-3">
               {/* Brand Filter */}
               <div>
-                <label className="block text-base font-medium lg:text-sm lg:text-gray-700 text-white mb-3 lg:mb-2">
+                <label className="block text-sm font-medium lg:text-gray-700 text-white mb-2">
                   Brand
                 </label>
                 <select
                   value={filters.brand}
                   onChange={(e) => handleFilterChange("brand", e.target.value)}
-                  className="appearance-none w-full px-4 py-3.5 lg:py-2 lg:px-3 lg:border-gray-300 lg:bg-white bg-gray-800/70 border border-gray-700 text-white lg:text-gray-900 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  style={{
-                    backgroundImage:
-                      "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
-                    backgroundPosition: "right 0.75rem center",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "1.5em 1.5em",
-                    paddingRight: "2.5rem",
-                  }}
+                  className="w-full px-3 py-3 lg:py-2 lg:border-gray-300 lg:bg-white bg-gray-700 border-gray-600 text-white lg:text-gray-900 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 >
                   <option value="">All Brands</option>
                   {brands.map((brand) => (
@@ -144,7 +132,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
               {/* Fuel Type Filter */}
               <div>
-                <label className="block text-base font-medium lg:text-sm lg:text-gray-700 text-white mb-3 lg:mb-2">
+                <label className="block text-sm font-medium lg:text-gray-700 text-white mb-2">
                   Fuel Type
                 </label>
                 <select
@@ -152,15 +140,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                   onChange={(e) =>
                     handleFilterChange("fuelType", e.target.value)
                   }
-                  className="appearance-none w-full px-4 py-3.5 lg:py-2 lg:px-3 lg:border-gray-300 lg:bg-white bg-gray-800/70 border border-gray-700 text-white lg:text-gray-900 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  style={{
-                    backgroundImage:
-                      "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
-                    backgroundPosition: "right 0.75rem center",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "1.5em 1.5em",
-                    paddingRight: "2.5rem",
-                  }}
+                  className="w-full px-3 py-3 lg:py-2 lg:border-gray-300 lg:bg-white bg-gray-700 border-gray-600 text-white lg:text-gray-900 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 >
                   <option value="">All Fuel Types</option>
                   <option value="Petrol">Petrol</option>
@@ -172,7 +152,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
               {/* Transmission Filter */}
               <div>
-                <label className="block text-base font-medium lg:text-sm lg:text-gray-700 text-white mb-3 lg:mb-2">
+                <label className="block text-sm font-medium lg:text-gray-700 text-white mb-2">
                   Transmission
                 </label>
                 <select
@@ -180,15 +160,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                   onChange={(e) =>
                     handleFilterChange("transmission", e.target.value)
                   }
-                  className="appearance-none w-full px-4 py-3.5 lg:py-2 lg:px-3 lg:border-gray-300 lg:bg-white bg-gray-800/70 border border-gray-700 text-white lg:text-gray-900 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  style={{
-                    backgroundImage:
-                      "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
-                    backgroundPosition: "right 0.75rem center",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "1.5em 1.5em",
-                    paddingRight: "2.5rem",
-                  }}
+                  className="w-full px-3 py-3 lg:py-2 lg:border-gray-300 lg:bg-white bg-gray-700 border-gray-600 text-white lg:text-gray-900 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 >
                   <option value="">All Transmissions</option>
                   <option value="Manual">Manual</option>
@@ -198,12 +170,12 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
               {/* Price Range */}
               <div>
-                <label className="block text-base font-medium lg:text-sm lg:text-gray-700 text-white mb-3 lg:mb-2">
+                <label className="block text-sm font-medium lg:text-gray-700 text-white mb-2">
                   Price Range
                 </label>
-                <div className="space-y-5 lg:space-y-1">
+                <div className="space-y-4 lg:space-y-1">
                   <div>
-                    <div className="flex justify-between mb-2 lg:mb-1 text-sm lg:text-xs lg:text-gray-700 text-gray-300">
+                    <div className="flex justify-between mb-1 text-xs lg:text-gray-700 text-gray-300">
                       <span>Min: ₹{filters.minPrice.toLocaleString()}</span>
                     </div>
                     <input
@@ -215,11 +187,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                       onChange={(e) =>
                         handleFilterChange("minPrice", parseInt(e.target.value))
                       }
-                      className="w-full h-2 lg:h-1.5 accent-blue-500 rounded-lg appearance-none cursor-pointer bg-gray-800"
+                      className="w-full accent-red-600"
                     />
                   </div>
                   <div>
-                    <div className="flex justify-between mb-2 lg:mb-1 text-sm lg:text-xs lg:text-gray-700 text-gray-300">
+                    <div className="flex justify-between mb-1 text-xs lg:text-gray-700 text-gray-300">
                       <span>Max: ₹{filters.maxPrice.toLocaleString()}</span>
                     </div>
                     <input
@@ -231,20 +203,19 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                       onChange={(e) =>
                         handleFilterChange("maxPrice", parseInt(e.target.value))
                       }
-                      className="w-full h-2 lg:h-1.5 accent-blue-500 rounded-lg appearance-none cursor-pointer bg-gray-800"
+                      className="w-full accent-red-600"
                     />
-                  </div>
                 </div>
               </div>
 
               {/* Year Range */}
               <div>
-                <label className="block text-base font-medium lg:text-sm lg:text-gray-700 text-white mb-3 lg:mb-2">
+                <label className="block text-sm font-medium lg:text-gray-700 text-white mb-2">
                   Year Range
                 </label>
-                <div className="space-y-5 lg:space-y-1">
+                <div className="space-y-4 lg:space-y-1">
                   <div>
-                    <div className="flex justify-between mb-2 lg:mb-1 text-sm lg:text-xs lg:text-gray-700 text-gray-300">
+                    <div className="flex justify-between mb-1 text-xs lg:text-gray-700 text-gray-300">
                       <span>Min: {filters.minYear}</span>
                     </div>
                     <input
@@ -255,11 +226,11 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                       onChange={(e) =>
                         handleFilterChange("minYear", parseInt(e.target.value))
                       }
-                      className="w-full h-2 lg:h-1.5 accent-blue-500 rounded-lg appearance-none cursor-pointer bg-gray-800"
+                      className="w-full accent-red-600"
                     />
                   </div>
                   <div>
-                    <div className="flex justify-between mb-2 lg:mb-1 text-sm lg:text-xs lg:text-gray-700 text-gray-300">
+                    <div className="flex justify-between mb-1 text-xs lg:text-gray-700 text-gray-300">
                       <span>Max: {filters.maxYear}</span>
                     </div>
                     <input
@@ -270,19 +241,18 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                       onChange={(e) =>
                         handleFilterChange("maxYear", parseInt(e.target.value))
                       }
-                      className="w-full h-2 lg:h-1.5 accent-blue-500 rounded-lg appearance-none cursor-pointer bg-gray-800"
+                      className="w-full accent-red-600"
                     />
-                  </div>
                 </div>
               </div>
 
               {/* Kilometers */}
               <div>
-                <label className="block text-base font-medium lg:text-sm lg:text-gray-700 text-white mb-3 lg:mb-2">
+                <label className="block text-sm font-medium lg:text-gray-700 text-white mb-2">
                   Max Kilometers
                 </label>
                 <div>
-                  <div className="flex justify-between text-sm lg:text-xs lg:text-gray-700 text-gray-300 mb-2 lg:mb-1">
+                  <div className="flex justify-between text-xs lg:text-gray-700 text-gray-300 mb-1">
                     <span>0 km</span>
                     <span>{filters.maxKilometers.toLocaleString()} km</span>
                   </div>
@@ -298,28 +268,19 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
                         parseInt(e.target.value)
                       )
                     }
-                    className="w-full h-2 lg:h-1.5 accent-blue-500 rounded-lg appearance-none cursor-pointer bg-gray-800"
+                    className="w-full accent-red-600"
                   />
-                </div>
               </div>
 
               {/* Owners */}
-              <div>
-                <label className="block text-base font-medium lg:text-sm lg:text-gray-700 text-white mb-3 lg:mb-2">
+              <div className="mb-0">
+                <label className="block text-sm font-medium lg:text-gray-700 text-white mb-2">
                   Previous Owners
                 </label>
                 <select
                   value={filters.owners}
                   onChange={(e) => handleFilterChange("owners", e.target.value)}
-                  className="appearance-none w-full px-4 py-3.5 lg:py-2 lg:px-3 lg:border-gray-300 lg:bg-white bg-gray-800/70 border border-gray-700 text-white lg:text-gray-900 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  style={{
-                    backgroundImage:
-                      "url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e\")",
-                    backgroundPosition: "right 0.75rem center",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "1.5em 1.5em",
-                    paddingRight: "2.5rem",
-                  }}
+                  className="w-full px-3 py-3 lg:py-2 lg:border-gray-300 lg:bg-white bg-gray-700 border-gray-600 text-white lg:text-gray-900 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 >
                   <option value="">Any</option>
                   <option value="1">1st Owner</option>
@@ -331,16 +292,16 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
             </div>
 
             {/* Mobile Apply & Reset Buttons */}
-            <div className="lg:hidden pt-5 mt-2 border-t border-gray-800 flex space-x-3">
+            <div className="lg:hidden pt-3 border-t border-gray-600 flex space-x-2">
               <button
                 onClick={resetFilters}
-                className="w-1/3 bg-gray-800 hover:bg-gray-700 text-white py-3.5 rounded-lg font-medium transition-colors"
+                className="w-1/3 bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg font-medium transition-colors"
               >
                 Reset
               </button>
               <button
                 onClick={onToggle}
-                className="w-2/3 bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-lg font-semibold transition-colors"
+                className="w-2/3 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 rounded-lg font-semibold hover:from-red-700 hover:to-red-800 transition-colors"
               >
                 Apply Filters
               </button>

@@ -4,7 +4,7 @@ import { MapPin, Phone, Mail, Clock, MessageCircle } from "lucide-react";
 const Contact: React.FC = () => {
   const handleWhatsApp = () => {
     window.open(
-      "https://wa.me/919876543210?text=Hi, I would like to know more about ShiftNgo services",
+      "https://wa.me/919585889519?text=Hi, I would like to know more about ShiftNgo services",
       "_blank"
     );
   };
