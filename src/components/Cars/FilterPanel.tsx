@@ -1,6 +1,6 @@
 import React from "react";
 import { FilterState } from "../../types";
-import { SlidersHorizontal, X } from "lucide-react";
+import { X, AlignJustify } from "lucide-react";
 
 interface FilterPanelProps {
   filters: FilterState;
@@ -50,12 +50,12 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   return (
     <>
       {/* Mobile Filter Toggle */}
-      <div className="lg:hidden mb-4">
+      <div className="lg:hidden">
         <button
           onClick={onToggle}
-          className="flex items-center justify-center space-x-2 w-full bg-blue-600 px-4 py-3 rounded-lg text-white shadow-md hover:bg-blue-700 hover:shadow-lg transition-all font-medium"
+          className="flex items-center justify-center space-x-2 w-full bg-blue-600 py-3 rounded-md text-white shadow-sm hover:bg-blue-700 transition-all font-medium"
         >
-          <SlidersHorizontal className="h-5 w-5" />
+          <AlignJustify className="h-5 w-5" />
           <span>Filter Cars</span>
         </button>
       </div>
