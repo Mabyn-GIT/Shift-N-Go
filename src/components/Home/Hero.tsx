@@ -29,22 +29,25 @@ const Hero: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-            Drive{" "}
+            Every Car Has{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-700">
-              Premium
+              a Story
             </span>
             .
-            <br />
-            Pay{" "}
+            <br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-red-600">
-              Less
+              Start yours{" "}
             </span>
-            .
+            Here.
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed">
-            Discover certified pre-owned cars at unbeatable prices. Every
-            vehicle comes with our quality guarantee and hassle-free experience.
+            Behind every wheel is a story waiting to continue.
+            <br/>Ready for the right person to write the next chapter.
+            <br/>
+            <span className="italic text-red-400">
+              May be that's you.
+            </span>
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16">
