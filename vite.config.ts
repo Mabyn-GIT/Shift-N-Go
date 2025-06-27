@@ -10,10 +10,11 @@ export default defineConfig({
   server: {
     port: 3000,
     host: "0.0.0.0", // This is important for deployment
+    allowedHosts: true, // Allow all hosts for development
   },
-  define: {
-    // Ensure environment variables are available in production
-    __VITE_SUPABASE_URL__: JSON.stringify(process.env.VITE_SUPABASE_URL),
-    __VITE_SUPABASE_ANON_KEY__: JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY),
+  preview: {
+    port: 3000,
+    host: "0.0.0.0",
+    allowedHosts: true, // Allow all hosts for preview/production
   },
 });
