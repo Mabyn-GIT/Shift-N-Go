@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
@@ -9,10 +8,14 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    host: "0.0.0.0", // This is important for deployment
+    host: "0.0.0.0",
+  },
+  preview: {
+    allowedHosts: ['shift-n-go.onrender.com'],
+    host: '0.0.0.0',
+    port: 4173
   },
   define: {
-    // Ensure environment variables are available in production
     __VITE_SUPABASE_URL__: JSON.stringify(process.env.VITE_SUPABASE_URL),
     __VITE_SUPABASE_ANON_KEY__: JSON.stringify(process.env.VITE_SUPABASE_ANON_KEY),
   },
