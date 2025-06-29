@@ -23,7 +23,7 @@
         "destination": "/sitemap.xml"
       },
       {
-        "source": "",
+        "source": "**",
         "destination": "/index.html"
       }
     ]
