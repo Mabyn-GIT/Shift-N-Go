@@ -7,21 +7,21 @@ const WhyShiftNgo: React.FC = () => {
       icon: Shield,
       title: "Certified Cars",
       description:
-        "Every vehicle undergoes rigorous 200-point inspection to ensure quality and reliability.",
+        "Drive with confidence — every car is handpicked and rigorously certified for your safety and peace of mind.",
       color: "from-blue-500 to-blue-600",
     },
     {
       icon: Search,
       title: "Free Inspection",
       description:
-        "Comprehensive inspection report provided for complete transparency and peace of mind.",
+        "Before it becomes your car, it becomes our responsibility — detailed inspections for complete peace of mind.",
       color: "from-green-500 to-green-600",
     },
     {
       icon: CreditCard,
-      title: "Easy Financing",
+      title: "Ownership Made Easy",
       description:
-        "Flexible financing options with competitive rates to make your dream car affordable.",
+        "From test drive to your driveway — we make every step feel effortless and guided.",
       color: "from-purple-500 to-purple-600",
     },
     {
@@ -35,14 +35,14 @@ const WhyShiftNgo: React.FC = () => {
       icon: Award,
       title: "Quality Guarantee",
       description:
-        "7-day return policy if you are not completely satisfied with your purchase.",
+        "If it doesn't meet our standards, it doesn't make it to you. Simple as that",
       color: "from-red-500 to-red-600",
     },
     {
       icon: Clock,
-      title: "24/7 Support",
+      title: "Dedicated Guidance",
       description:
-        "Round-the-clock customer support to assist you throughout your car buying journey.",
+        "Beyond just a sale — we're here to build trust and support your journey, long after the keys are handed over.",
       color: "from-teal-500 to-teal-600",
     },
   ];
