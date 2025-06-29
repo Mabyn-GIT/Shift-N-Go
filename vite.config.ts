@@ -1,5 +1,8 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import dotenv from "dotenv"; // ✅ Import dotenv
+
+dotenv.config(); // ✅ Load .env before accessing process.env
 
 export default defineConfig({
   base: '/',
@@ -14,7 +17,7 @@ export default defineConfig({
   preview: {
     allowedHosts: ['shift-n-go.onrender.com'],
     host: '0.0.0.0',
-    port: 4173
+    port: 4173,
   },
   define: {
     __VITE_SUPABASE_URL__: JSON.stringify(process.env.VITE_SUPABASE_URL),
