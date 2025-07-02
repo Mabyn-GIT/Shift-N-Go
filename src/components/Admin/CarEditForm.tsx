@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { supabase } from "../../lib/supabase";
-import { Upload, X } from "lucide-react";
+import { Upload, X, GripVertical } from "lucide-react";
 import toast from "react-hot-toast";
 import { Car as CarType } from "../../types";
 import imageCompression from "browser-image-compression";
@@ -178,6 +178,108 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
 
   const removeNewImage = (index: number) => {
     setNewImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Drag and drop functions for reordering existing images
+  const handleExistingImageDragStart = (e: React.DragEvent, index: number) => {
+    e.dataTransfer.setData("text/plain", `existing-${index}`);
+    e.dataTransfer.effectAllowed = "move";
+    (e.target as HTMLElement).classList.add("dragging");
+  };
+
+  const handleExistingImageDragEnd = (e: React.DragEvent) => {
+    (e.target as HTMLElement).classList.remove("dragging");
+  };
+
+  const handleExistingImageDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  const handleExistingImageDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    (e.currentTarget as HTMLElement).classList.add("drag-over");
+  };
+
+  const handleExistingImageDragLeave = (e: React.DragEvent) => {
+    (e.currentTarget as HTMLElement).classList.remove("drag-over");
+  };
+
+  const handleExistingImageDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    (e.currentTarget as HTMLElement).classList.remove("drag-over");
+    
+    const dragData = e.dataTransfer.getData("text/plain");
+    
+    if (!dragData.startsWith("existing-")) return;
+    
+    const dragIndex = parseInt(dragData.replace("existing-", ""));
+    
+    if (dragIndex === dropIndex) return;
+
+    setExistingImages((prev) => {
+      const newImages = [...prev];
+      const draggedImage = newImages[dragIndex];
+      
+      // Remove the dragged image
+      newImages.splice(dragIndex, 1);
+      
+      // Insert it at the drop position
+      newImages.splice(dropIndex, 0, draggedImage);
+      
+      return newImages;
+    });
+  };
+
+  // Drag and drop functions for reordering new images
+  const handleNewImageDragStart = (e: React.DragEvent, index: number) => {
+    e.dataTransfer.setData("text/plain", `new-${index}`);
+    e.dataTransfer.effectAllowed = "move";
+    (e.target as HTMLElement).classList.add("dragging");
+  };
+
+  const handleNewImageDragEnd = (e: React.DragEvent) => {
+    (e.target as HTMLElement).classList.remove("dragging");
+  };
+
+  const handleNewImageDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  const handleNewImageDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    (e.currentTarget as HTMLElement).classList.add("drag-over");
+  };
+
+  const handleNewImageDragLeave = (e: React.DragEvent) => {
+    (e.currentTarget as HTMLElement).classList.remove("drag-over");
+  };
+
+  const handleNewImageDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    (e.currentTarget as HTMLElement).classList.remove("drag-over");
+    
+    const dragData = e.dataTransfer.getData("text/plain");
+    
+    if (!dragData.startsWith("new-")) return;
+    
+    const dragIndex = parseInt(dragData.replace("new-", ""));
+    
+    if (dragIndex === dropIndex) return;
+
+    setNewImages((prev) => {
+      const newImages = [...prev];
+      const draggedImage = newImages[dragIndex];
+      
+      // Remove the dragged image
+      newImages.splice(dragIndex, 1);
+      
+      // Insert it at the drop position
+      newImages.splice(dropIndex, 0, draggedImage);
+      
+      return newImages;
+    });
   };
 
   const uploadNewImages = async (): Promise<string[]> => {
@@ -519,21 +621,53 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Current Images
             </label>
+            <p className="text-sm text-gray-600 mb-2">
+              Drag images to reorder them. First image will be the main image.
+            </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {existingImages.map((image, index) => (
-                <div key={index} className="relative">
+                <div 
+                  key={index} 
+                  className="relative group cursor-move image-grid-item"
+                  draggable
+                  onDragStart={(e) => handleExistingImageDragStart(e, index)}
+                  onDragEnd={handleExistingImageDragEnd}
+                  onDragOver={handleExistingImageDragOver}
+                  onDragEnter={handleExistingImageDragEnter}
+                  onDragLeave={handleExistingImageDragLeave}
+                  onDrop={(e) => handleExistingImageDrop(e, index)}
+                >
                   <img
                     src={image}
                     alt={`Current Image ${index + 1}`}
-                    className="w-full h-24 object-cover rounded-lg"
+                    className="w-full h-24 object-cover rounded-lg border-2 border-transparent group-hover:border-blue-300 transition-colors"
                   />
+                  
+                  {/* Drag handle */}
+                  <div className="absolute top-1 left-1 bg-black bg-opacity-50 text-white rounded p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <GripVertical className="h-3 w-3" />
+                  </div>
+                  
+                  {/* Index indicator */}
+                  <div className="absolute top-1 right-8 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                    {index + 1}
+                  </div>
+                  
+                  {/* Remove button */}
                   <button
                     type="button"
                     onClick={() => removeExistingImage(index)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
                   >
                     <X className="h-4 w-4" />
                   </button>
+                  
+                  {/* Main image indicator */}
+                  {index === 0 && (
+                    <div className="absolute bottom-1 left-1 bg-green-600 text-white text-xs px-2 py-1 rounded">
+                      Main
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -567,23 +701,55 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
 
           {/* New Image Preview */}
           {newImages.length > 0 && (
-            <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-              {newImages.map((image, index) => (
-                <div key={index} className="relative">
-                  <img
-                    src={URL.createObjectURL(image)}
-                    alt={`New Image ${index + 1}`}
-                    className="w-full h-24 object-cover rounded-lg"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeNewImage(index)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+            <div className="mt-4">
+              <p className="text-sm text-gray-600 mb-2">
+                New images to be added. Drag to reorder them.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {newImages.map((image, index) => (
+                  <div 
+                    key={index} 
+                    className="relative group cursor-move image-grid-item"
+                    draggable
+                    onDragStart={(e) => handleNewImageDragStart(e, index)}
+                    onDragEnd={handleNewImageDragEnd}
+                    onDragOver={handleNewImageDragOver}
+                    onDragEnter={handleNewImageDragEnter}
+                    onDragLeave={handleNewImageDragLeave}
+                    onDrop={(e) => handleNewImageDrop(e, index)}
                   >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              ))}
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt={`New Image ${index + 1}`}
+                      className="w-full h-24 object-cover rounded-lg border-2 border-transparent group-hover:border-blue-300 transition-colors"
+                    />
+                    
+                    {/* Drag handle */}
+                    <div className="absolute top-1 left-1 bg-black bg-opacity-50 text-white rounded p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <GripVertical className="h-3 w-3" />
+                    </div>
+                    
+                    {/* Index indicator */}
+                    <div className="absolute top-1 right-8 bg-orange-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                      +{index + 1}
+                    </div>
+                    
+                    {/* Remove button */}
+                    <button
+                      type="button"
+                      onClick={() => removeNewImage(index)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                    
+                    {/* New image indicator */}
+                    <div className="absolute bottom-1 left-1 bg-orange-600 text-white text-xs px-2 py-1 rounded">
+                      New
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>

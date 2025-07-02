@@ -47,6 +47,27 @@ html {
   animation: float 6s ease-in-out infinite;
 }
 
+/* Drag and drop styles */
+.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+.drag-over {
+  border-color: #3b82f6 !important;
+  transform: scale(1.05);
+}
+
+/* Image reorder animation */
+.image-grid-item {
+  transition: all 0.2s ease-in-out;
+}
+
+.image-grid-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
 /* Glassmorphism effect */
 .glass {
   background: rgba(255, 255, 255, 0.1);

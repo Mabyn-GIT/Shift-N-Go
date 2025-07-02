@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { supabase } from "../../lib/supabase";
-import { Upload, X, Car, Check } from "lucide-react";
+import { Upload, X, Car, Check, GripVertical } from "lucide-react";
 import toast from "react-hot-toast";
 import imageCompression from "browser-image-compression";
 
@@ -158,6 +158,52 @@ const CarUploadForm: React.FC = () => {
 
   const removeImage = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+  // Drag and drop functions for reordering images
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    e.dataTransfer.setData("text/plain", index.toString());
+    e.dataTransfer.effectAllowed = "move";
+    (e.target as HTMLElement).classList.add("dragging");
+  };
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    (e.target as HTMLElement).classList.remove("dragging");
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+  };
+
+  const handleDragEnter = (e: React.DragEvent) => {
+    e.preventDefault();
+    (e.currentTarget as HTMLElement).classList.add("drag-over");
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    (e.currentTarget as HTMLElement).classList.remove("drag-over");
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    (e.currentTarget as HTMLElement).classList.remove("drag-over");
+    
+    const dragIndex = parseInt(e.dataTransfer.getData("text/plain"));
+    
+    if (dragIndex === dropIndex) return;
+
+    setImages((prev) => {
+      const newImages = [...prev];
+      const draggedImage = newImages[dragIndex];
+      
+      // Remove the dragged image
+      newImages.splice(dragIndex, 1);
+      
+      // Insert it at the drop position
+      newImages.splice(dropIndex, 0, draggedImage);
+      
+      return newImages;
+    });
   };
 
   const uploadImages = async (): Promise<string[]> => {
@@ -584,23 +630,57 @@ const CarUploadForm: React.FC = () => {
 
           {/* Image Preview */}
           {images.length > 0 && (
-            <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-              {images.map((image, index) => (
-                <div key={index} className="relative">
-                  <img
-                    src={URL.createObjectURL(image)}
-                    alt={`Preview ${index + 1}`}
-                    className="w-full h-24 object-cover rounded-lg"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => removeImage(index)}
-                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+            <div className="mt-4">
+              <p className="text-sm text-gray-600 mb-2">
+                Drag images to reorder them. First image will be the main image.
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {images.map((image, index) => (
+                  <div
+                    key={index}
+                    className="relative group cursor-move image-grid-item"
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, index)}
+                    onDragEnd={handleDragEnd}
+                    onDragOver={handleDragOver}
+                    onDragEnter={handleDragEnter}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, index)}
                   >
-                    <X className="h-4 w-4" />
-                  </button>
-                </div>
-              ))}
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt={`Preview ${index + 1}`}
+                      className="w-full h-24 object-cover rounded-lg border-2 border-transparent group-hover:border-blue-300 transition-colors"
+                    />
+                    
+                    {/* Drag handle */}
+                    <div className="absolute top-1 left-1 bg-black bg-opacity-50 text-white rounded p-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <GripVertical className="h-3 w-3" />
+                    </div>
+                    
+                    {/* Index indicator */}
+                    <div className="absolute top-1 right-8 bg-blue-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                      {index + 1}
+                    </div>
+                    
+                    {/* Remove button */}
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                    
+                    {/* Main image indicator */}
+                    {index === 0 && (
+                      <div className="absolute bottom-1 left-1 bg-green-600 text-white text-xs px-2 py-1 rounded">
+                        Main
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
