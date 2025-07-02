@@ -18,8 +18,26 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
   onSuccess,
   onError,
 }) => {
+  const brands = [
+    "Maruti Suzuki",
+    "Hyundai",
+    "Honda",
+    "Toyota",
+    "Tata",
+    "Mahindra",
+    "Ford",
+    "Volkswagen",
+    "BMW",
+    "Mercedes-Benz",
+    "Audi",
+    "Other",
+  ];
+
+  // Check if the car's brand is a custom brand (not in predefined list)
+  const isCustomBrand = car.brand && !brands.slice(0, -1).includes(car.brand);
+  
   const [formData, setFormData] = useState({
-    brand: car.brand || "",
+    brand: isCustomBrand ? "Other" : car.brand || "",
     model: car.model || "",
     year: car.year || new Date().getFullYear(),
     fuel_type:
@@ -33,6 +51,7 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
     description: car.description || "",
   });
 
+  const [customBrand, setCustomBrand] = useState(isCustomBrand ? car.brand || "" : "");
   const [existingImages, setExistingImages] = useState<string[]>(
     car.images || []
   );
@@ -45,6 +64,12 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
     >
   ) => {
     const { name, value, type } = e.target;
+
+    // If changing brand to something other than "Other", reset customBrand
+    if (name === "brand" && value !== "Other") {
+      setCustomBrand("");
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]:
@@ -54,6 +79,10 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
           ? parseInt(value) || 0
           : value,
     }));
+  };
+
+  const handleCustomBrandChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCustomBrand(e.target.value);
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -216,7 +245,8 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
       !formData.brand ||
       !formData.model ||
       !formData.price ||
-      !formData.kilometers
+      !formData.kilometers ||
+      (formData.brand === "Other" && !customBrand)
     ) {
       toast.error("Please fill in all required fields");
       return;
@@ -244,7 +274,7 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
 
       // Update car record
       const carData = {
-        brand: formData.brand,
+        brand: formData.brand === "Other" ? customBrand : formData.brand,
         model: formData.model,
         year: formData.year,
         fuel_type: formData.fuel_type,
@@ -284,21 +314,6 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
     }
   };
 
-  const brands = [
-    "Maruti Suzuki",
-    "Hyundai",
-    "Honda",
-    "Toyota",
-    "Tata",
-    "Mahindra",
-    "Ford",
-    "Volkswagen",
-    "BMW",
-    "Mercedes-Benz",
-    "Audi",
-    "Other",
-  ];
-
   return (
     <div className="bg-white rounded-lg">
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -308,20 +323,36 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Brand *
             </label>
-            <select
-              name="brand"
-              value={formData.brand}
-              onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            >
-              <option value="">Select Brand</option>
-              {brands.map((brand) => (
-                <option key={brand} value={brand}>
-                  {brand}
-                </option>
-              ))}
-            </select>
+            <div>
+              <select
+                name="brand"
+                value={formData.brand}
+                onChange={handleInputChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              >
+                <option value="">Select Brand</option>
+                {brands.map((brand) => (
+                  <option key={brand} value={brand}>
+                    {brand}
+                  </option>
+                ))}
+              </select>
+
+              {/* Custom brand input */}
+              {formData.brand === "Other" && (
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    value={customBrand}
+                    onChange={handleCustomBrandChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter brand name"
+                    required
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
           <div>
