@@ -691,7 +691,7 @@ const CarEditForm: React.FC<CarEditFormProps> = ({
             <label htmlFor="image-upload" className="cursor-pointer">
               <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
               <p className="text-sm text-gray-600">
-                Click to upload images or drag and drop
+                Click to upload images
               </p>
               <p className="text-xs text-gray-500 mt-1">
                 PNG, JPG, JPEG up to 10MB each
